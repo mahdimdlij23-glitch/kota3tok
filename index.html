@@ -3,8 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kota3 tok</title>
+<title>Kota3tok</title>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
 <style>
+/* ====== تصميم عام ====== */
 body{
   margin:0;
   font-family: Arial, sans-serif;
@@ -14,19 +20,27 @@ body{
 }
 header{
   background: linear-gradient(135deg,#020824,#000);
-  padding:35px 15px;
+  padding:25px 15px;
   border-bottom:2px solid #0a7cff;
   box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 .logo{
-  font-size:34px;
+  font-size:28px;
   font-weight:bold;
   color:#0a7cff;
-  letter-spacing:2px;
 }
-.logo span{ color:#fff; }
-.subtitle{ color:#ccc; margin-top:8px; font-size:15px; }
-section{ padding:25px 10px; }
+.logo span{ color:#fff; margin-left:6px; font-size:24px;}
+.logo img{ width:36px; vertical-align:middle; margin-left:6px;}
+.search-bar{
+  padding:5px 10px;
+  border-radius:12px;
+  border:none;
+  font-size:15px;
+}
+section{ padding:20px 10px; }
 .accordion{
   background:#0b122e;
   color:#4da3ff;
@@ -68,6 +82,13 @@ section{ padding:25px 10px; }
   background: rgba(77,163,255,0.15);
   border-radius:8px;
 }
+.price-note{
+  font-size:14px;
+  color:#0a7cff;
+  margin-bottom:8px;
+  font-weight:bold;
+  text-align:right;
+}
 button.contact{
   margin-top:20px;
   background:#0a7cff;
@@ -81,79 +102,215 @@ button.contact{
   box-shadow: 0 3px 6px rgba(0,0,0,0.4);
 }
 button.contact:hover{ background:#0056b3; }
-footer{
-  margin-top:25px;
+
+/* ====== زر الإدارة واللوحة ====== */
+#menuBtn{
+  position:fixed;
+  top:15px;
+  right:15px;
+  font-size:28px;
+  cursor:pointer;
+  z-index:1000;
+  color:#0a7cff;
+}
+#adminPanel{
+  display:none;
+  position:fixed;
+  top:50px;
+  right:10px;
+  background:#111a3a;
   padding:15px;
-  font-size:13px;
-  color:#777;
-  text-align:center;
+  border-radius:12px;
+  width:260px;
+  box-shadow:0 4px 8px rgba(0,0,0,0.5);
+  z-index:1000;
+}
+#adminPanel input, #adminPanel select{
+  width:100%;
+  margin-bottom:8px;
+  padding:6px;
+  border-radius:5px;
+  border:none;
+}
+#adminPanel button{
+  width:100%;
+  padding:8px;
+  border-radius:6px;
+  background:#0a7cff;
+  color:#fff;
+  border:none;
+  cursor:pointer;
+  margin-bottom:6px;
+}
+#adminPanel button:hover{ background:#0056b3; }
+
+/* ====== أيقونات لكل قسم ====== */
+.section-icon{
+  margin-left:6px;
+  font-size:18px;
 }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">Kota3 <span>tok</span></div>
-  <div class="subtitle">عرض القطع والأسعار</div>
+  <div class="logo">
+    Kota3<span>tok</span>
+    <img src="https://cdn-icons-png.flaticon.com/512/1250/1250624.png" alt="TukTuk">
+  </div>
+  <input type="text" id="searchInput" class="search-bar" placeholder="ابحث عن القطع...">
 </header>
 
 <section>
-  <button class="accordion">قطع غيار</button>
+  <button class="accordion">قطع غيار <span class="section-icon">🏍️</span></button>
+  <div class="price-note">📌 السعر المعروض هو سعر الوكالة +2$</div>
   <div class="panel" id="spareParts"></div>
 
-  <button class="accordion">قطع زينة واكسسوار</button>
+  <button class="accordion">زينة وإكسسوار <span class="section-icon">⭐</span></button>
+  <div class="price-note">📌 السعر المعروض هو سعر الوكالة +2$</div>
   <div class="panel" id="accessories"></div>
 
-  <button class="contact" onclick="window.location.href='https://wa.me/96170956420'">
+  <button class="contact" onclick="window.location.href='https://wa.me/96100000000'">
     📞 راسلنا واتساب
   </button>
 </section>
 
+<div id="menuBtn">☰</div>
+<div id="adminPanel">
+  <input type="password" id="adminPass" placeholder="كلمة السر">
+  <button id="loginBtn">تسجيل الدخول</button>
+
+  <div id="addForm" style="display:none;">
+    <input type="text" id="itemName" placeholder="اسم القطعة">
+    <input type="text" id="itemPrice" placeholder="السعر">
+    <select id="itemCategory">
+      <option value="spareParts">قطع غيار</option>
+      <option value="accessories">زينة وإكسسوار</option>
+    </select>
+    <button id="addItemBtn">أضف القطعة</button>
+    <select id="sortFilter">
+      <option value="">-- ترتيب / فلتر --</option>
+      <option value="priceAsc">السعر من الأقل للأعلى</option>
+      <option value="priceDesc">السعر من الأعلى للأقل</option>
+      <option value="nameAsc">الاسم أبجدي</option>
+      <option value="sparePartsOnly">قطع غيار فقط</option>
+      <option value="accessoriesOnly">زينة فقط</option>
+    </select>
+  </div>
+</div>
+
 <footer>
-  © 2025 Kota3 tok - جميع الحقوق محفوظة
+  © 2025 Kota3tok - جميع الحقوق محفوظة
 </footer>
 
 <script>
-// مصفوفة القطع لكل قسم
-const spareParts = [
-  {name:"فلتر زيت", price:"5$"},
-  {name:"فلتر هوا", price:"7$"},
-  {name:"بواجي", price:"12$"},
-  {name:"زيت محرك", price:"10$"}
-];
+// ====== Firebase Setup (مدمج بالقيم اللي بعته) ======
+const firebaseConfig = {
+  apiKey: "AIzaSyDoi4EAAdWJ9BUbLc3mP1zuNXXUd7a4Dn4",
+  authDomain: "kota3tok.firebaseapp.com",
+  projectId: "kota3tok",
+  storageBucket: "kota3tok.firebasestorage.app",
+  messagingSenderId: "322095191128",
+  appId: "1:322095191128:web:f5e06d891041097302662d",
+  measurementId: "G-YN09RQSFBK"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-const accessories = [
-  {name:"غطاء سيارة", price:"15$"},
-  {name:"إطارات صغيرة", price:"20$"},
-  {name:"وسادة مقعد", price:"12$"},
-  {name:"عطر سيارة", price:"5$"}
-];
+// ====== بيانات محلية قبل Firebase ======
+let spareParts = [];
+let accessories = [];
 
-// دالة لإضافة القطع تلقائيًا
+// ====== دوال لإظهار القطع ======
 function populateItems(array, containerId){
   const container = document.getElementById(containerId);
   container.innerHTML = "";
   array.forEach(item=>{
     const div = document.createElement("div");
     div.className="item";
-    div.innerHTML = `<span>${item.name}</span><span>${item.price}</span>`;
+    div.innerHTML = `<span>${item.name}</span><span>${item.price} <button style="margin-left:5px;" onclick="deleteItem('${containerId}','${item.name}')">❌</button></span>`;
     container.appendChild(div);
   });
 }
 
-// نفّذ للصفحة
-populateItems(spareParts,"spareParts");
-populateItems(accessories,"accessories");
+// ====== حذف القطع ======
+function deleteItem(containerId, name){
+  if(confirm("هل تريد حذف هذه القطعة؟")){
+    const collection = containerId;
+    db.collection(collection).where("name","==",name).get().then(snapshot=>{
+      snapshot.forEach(doc=>{ doc.ref.delete(); });
+    });
+  }
+}
 
-// Accordion functionality
+// ====== جلب البيانات من Firebase ======
+function fetchItems(){
+  db.collection("spareParts").onSnapshot(snapshot=>{
+    spareParts.length=0;
+    snapshot.forEach(doc=>{ spareParts.push(doc.data()); });
+    populateItems(spareParts,"spareParts");
+  });
+  db.collection("accessories").onSnapshot(snapshot=>{
+    accessories.length=0;
+    snapshot.forEach(doc=>{ accessories.push(doc.data()); });
+    populateItems(accessories,"accessories");
+  });
+}
+fetchItems();
+
+// ====== إدارة لوحة الإدارة ======
+const menuBtn = document.getElementById("menuBtn");
+const adminPanel = document.getElementById("adminPanel");
+const loginBtn = document.getElementById("loginBtn");
+const addForm = document.getElementById("addForm");
+const adminPass = document.getElementById("adminPass");
+const addItemBtn = document.getElementById("addItemBtn");
+const ADMIN_PASSWORD = "Kt3-Admin-01";
+
+menuBtn.onclick = ()=>{ adminPanel.style.display = adminPanel.style.display==="none"?"block":"none"; }
+
+loginBtn.onclick = ()=>{
+  if(adminPass.value === ADMIN_PASSWORD){
+    addForm.style.display="block";
+    alert("تم تسجيل الدخول ✅");
+  } else{
+    alert("كلمة سر خاطئة ❌");
+  }
+}
+
+// ====== إضافة القطع ======
+addItemBtn.onclick = ()=>{
+  const name = document.getElementById("itemName").value;
+  const price = document.getElementById("itemPrice").value;
+  const category = document.getElementById("itemCategory").value;
+
+  if(name && price){
+    db.collection(category).add({name, price})
+      .then(()=>{ alert("تمت الإضافة ✅"); document.getElementById("itemName").value=""; document.getElementById("itemPrice").value=""; })
+      .catch(err=>alert("حدث خطأ ❌ "+err));
+  } else alert("يرجى ملء جميع الحقول!");
+}
+
+// ====== Accordion ======
 const acc = document.getElementsByClassName("accordion");
 for(let i=0;i<acc.length;i++){
   acc[i].addEventListener("click",function(){
     this.classList.toggle("active");
-    const panel = this.nextElementSibling;
+    const panel = this.nextElementSibling.nextElementSibling; // تخطي الملاحظة
     panel.style.maxHeight = panel.style.maxHeight ? null : panel.scrollHeight + "px";
   });
 }
+
+// ====== بحث مباشر ======
+document.getElementById("searchInput").addEventListener("input", function(){
+  const query = this.value.toLowerCase();
+  function filterArray(arr, containerId){
+    const filtered = arr.filter(item=>item.name.toLowerCase().includes(query));
+    populateItems(filtered,containerId);
+  }
+  filterArray(spareParts,"spareParts");
+  filterArray(accessories,"accessories");
+});
 </script>
 
 </body>
