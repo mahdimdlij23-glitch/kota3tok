@@ -102,6 +102,10 @@ const db = getFirestore(app);
 const menuBtn = document.querySelector(".menu-btn");
 const adminPanel = document.getElementById("adminPanel");
 const closeAdmin = document.getElementById("closeAdmin");
+
+// نادى loadItems فور تحميل الصفحة
+window.onload = () => { loadItems(); }
+
 menuBtn.onclick = () => {
   const password = prompt("كلمة السر:");
   if(password === "Kt3-Admin-01"){
