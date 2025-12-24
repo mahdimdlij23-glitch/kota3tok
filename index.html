@@ -3,314 +3,284 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kota3tok</title>
-
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
+<title>Kota3Tok - قطع غيار</title>
 <style>
-/* ====== تصميم عام ====== */
-body{
-  margin:0;
-  font-family: Arial, sans-serif;
-  background:#01010a;
-  color:#fff;
-  text-align:center;
-}
-header{
-  background: linear-gradient(135deg,#020824,#000);
-  padding:25px 15px;
-  border-bottom:2px solid #0a7cff;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.5);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.logo{
-  font-size:28px;
-  font-weight:bold;
-  color:#0a7cff;
-}
-.logo span{ color:#fff; margin-left:6px; font-size:24px;}
-.logo img{ width:36px; vertical-align:middle; margin-left:6px;}
-.search-bar{
-  padding:5px 10px;
-  border-radius:12px;
-  border:none;
-  font-size:15px;
-}
-section{ padding:20px 10px; }
-.accordion{
-  background:#0b122e;
-  color:#4da3ff;
-  cursor:pointer;
-  padding:18px 20px;
-  width:90%;
-  border:none;
-  text-align:right;
-  outline:none;
-  font-size:18px;
-  border-radius:12px;
-  margin:12px auto;
-  transition:0.3s;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.4);
-}
-.accordion:hover{ background: rgba(77,163,255,0.15); }
-.panel{
-  max-height:0;
-  overflow:hidden;
-  transition:max-height 0.3s ease;
-  background:#111a3a;
-  margin:0 auto 18px auto;
-  border-radius:12px;
-  width:90%;
-  text-align:right;
-  padding:0 15px;
-  box-shadow: inset 0 0 5px rgba(77,163,255,0.1);
-}
-.item{
-  display:flex;
-  justify-content:space-between;
-  padding:12px 0;
-  border-bottom:1px solid #1e2a5a;
-  font-size:16px;
-  transition:0.2s;
-}
-.item:last-child{ border-bottom:none; }
-.item:hover{
-  background: rgba(77,163,255,0.15);
-  border-radius:8px;
-}
-.price-note{
-  font-size:14px;
-  color:#0a7cff;
-  margin-bottom:8px;
-  font-weight:bold;
-  text-align:right;
-}
-button.contact{
-  margin-top:20px;
-  background:#0a7cff;
-  color:white;
-  border:none;
-  padding:16px 25px;
-  border-radius:12px;
-  font-size:17px;
-  cursor:pointer;
-  width:90%;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.4);
-}
-button.contact:hover{ background:#0056b3; }
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0b122e;
+    color: #fff;
+  }
 
-/* ====== زر الإدارة واللوحة ====== */
-#menuBtn{
-  position:fixed;
-  top:15px;
-  right:15px;
-  font-size:28px;
-  cursor:pointer;
-  z-index:1000;
-  color:#0a7cff;
-}
-#adminPanel{
-  display:none;
-  position:fixed;
-  top:50px;
-  right:10px;
-  background:#111a3a;
-  padding:15px;
-  border-radius:12px;
-  width:260px;
-  box-shadow:0 4px 8px rgba(0,0,0,0.5);
-  z-index:1000;
-}
-#adminPanel input, #adminPanel select{
-  width:100%;
-  margin-bottom:8px;
-  padding:6px;
-  border-radius:5px;
-  border:none;
-}
-#adminPanel button{
-  width:100%;
-  padding:8px;
-  border-radius:6px;
-  background:#0a7cff;
-  color:#fff;
-  border:none;
-  cursor:pointer;
-  margin-bottom:6px;
-}
-#adminPanel button:hover{ background:#0056b3; }
+  header {
+    background: #11182b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  }
 
-/* ====== أيقونات لكل قسم ====== */
-.section-icon{
-  margin-left:6px;
-  font-size:18px;
-}
+  header h1 {
+    margin: 0;
+    font-size: 24px;
+  }
+
+  .menu-btn {
+    cursor: pointer;
+    font-size: 24px;
+  }
+
+  #adminPanel {
+    display: none;
+    position: fixed;
+    top: 60px;
+    right: 10px;
+    background:#11182b;
+    padding:15px;
+    border-radius:14px;
+    width:280px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.6);
+    z-index:2000;
+  }
+
+  #adminPanel input, #adminPanel select {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 6px;
+    border-radius: 6px;
+    border: none;
+  }
+
+  #adminPanel button {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    background: #1e2b4d;
+    color: #fff;
+    cursor: pointer;
+    margin-bottom: 5px;
+  }
+
+  main {
+    margin-top: 80px;
+    padding: 20px;
+  }
+
+  .section {
+    margin-bottom: 40px;
+  }
+
+  .section h2 {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 5px;
+  }
+
+  .item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #333;
+  }
+
+  /* Floating Search Button */
+  .floating-search {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #1e2b4d;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    font-size: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+  }
+
+  /* Floating Search Input */
+  #searchInput {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 200px;
+    padding: 6px;
+    border-radius: 8px;
+    border: none;
+    background: #1e2b4d;
+    color: #fff;
+    z-index: 2001;
+  }
+
+  /* Delivery Modal */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 3000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.7);
+  }
+
+  .modal-content {
+    background-color: #1e2b4d;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    color: #fff;
+  }
+
+  .close {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+  }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">
-    Kota3<span>tok</span>
-    <img src="https://cdn-icons-png.flaticon.com/512/1250/1250624.png" alt="TukTuk">
-  </div>
-  <input type="text" id="searchInput" class="search-bar" placeholder="ابحث عن القطع...">
+  <h1>Kota3Tok</h1>
+  <div class="menu-btn">&#9776;</div>
 </header>
 
-<section>
-  <button class="accordion">قطع غيار <span class="section-icon">🏍️</span></button>
-  <div class="price-note">📌 السعر المعروض هو سعر الوكالة +2$</div>
-  <div class="panel" id="spareParts"></div>
-
-  <button class="accordion">زينة وإكسسوار <span class="section-icon">⭐</span></button>
-  <div class="price-note">📌 السعر المعروض هو سعر الوكالة +2$</div>
-  <div class="panel" id="accessories"></div>
-
-  <button class="contact" onclick="window.location.href='https://wa.me/96100000000'">
-    📞 راسلنا واتساب
-  </button>
-</section>
-
-<div id="menuBtn">☰</div>
 <div id="adminPanel">
-  <input type="password" id="adminPass" placeholder="كلمة السر">
-  <button id="loginBtn">تسجيل الدخول</button>
+  <h3>لوحة الإدارة</h3>
+  <input type="text" id="itemName" placeholder="اسم القطعة">
+  <input type="number" id="itemPrice" placeholder="السعر">
+  <select id="itemCategory">
+    <option value="spare">قطع غيار</option>
+    <option value="accessory">قطع زينة واكسسوار</option>
+  </select>
+  <button id="addItemBtn">إضافة / تعديل</button>
+  <button id="deliveryInfoBtn">معلومات التسليم</button>
+</div>
 
-  <div id="addForm" style="display:none;">
-    <input type="text" id="itemName" placeholder="اسم القطعة">
-    <input type="text" id="itemPrice" placeholder="السعر">
-    <select id="itemCategory">
-      <option value="spareParts">قطع غيار</option>
-      <option value="accessories">زينة وإكسسوار</option>
-    </select>
-    <button id="addItemBtn">أضف القطعة</button>
-    <select id="sortFilter">
-      <option value="">-- ترتيب / فلتر --</option>
-      <option value="priceAsc">السعر من الأقل للأعلى</option>
-      <option value="priceDesc">السعر من الأعلى للأقل</option>
-      <option value="nameAsc">الاسم أبجدي</option>
-      <option value="sparePartsOnly">قطع غيار فقط</option>
-      <option value="accessoriesOnly">زينة فقط</option>
-    </select>
+<main>
+  <div class="section" id="spare">
+    <h2>قطع غيار</h2>
+    <div class="itemsList"></div>
+  </div>
+  <div class="section" id="accessory">
+    <h2>قطع زينة واكسسوار</h2>
+    <div class="itemsList"></div>
+  </div>
+</main>
+
+<button class="floating-search">&#128269;</button>
+<input type="text" id="searchInput" placeholder="ابحث عن قطعة...">
+
+<!-- Delivery Modal -->
+<div id="deliveryModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>معلومات التسليم</h2>
+    <p>تثبيت الحجز يكون بعد دفع المبلغ.</p>
+    <p>وقت الوصول للطلب أسبوع تقريباً.</p>
   </div>
 </div>
 
-<footer>
-  © 2025 Kota3tok - جميع الحقوق محفوظة
-</footer>
+<!-- Firebase -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-<script>
-// ====== Firebase Setup (مدمج بالقيم اللي بعته) ======
-const firebaseConfig = {
-  apiKey: "AIzaSyDoi4EAAdWJ9BUbLc3mP1zuNXXUd7a4Dn4",
-  authDomain: "kota3tok.firebaseapp.com",
-  projectId: "kota3tok",
-  storageBucket: "kota3tok.firebasestorage.app",
-  messagingSenderId: "322095191128",
-  appId: "1:322095191128:web:f5e06d891041097302662d",
-  measurementId: "G-YN09RQSFBK"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+  const firebaseConfig = {
+    apiKey: "AIzaSyDoi4EAAdWJ9BUbLc3mP1zuNXXUd7a4Dn4",
+    authDomain: "kota3tok.firebaseapp.com",
+    projectId: "kota3tok",
+    storageBucket: "kota3tok.appspot.com",
+    messagingSenderId: "322095191128",
+    appId: "1:322095191128:web:f5e06d891041097302662d",
+    measurementId: "G-YN09RQSFBK"
+  };
 
-// ====== بيانات محلية قبل Firebase ======
-let spareParts = [];
-let accessories = [];
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-// ====== دوال لإظهار القطع ======
-function populateItems(array, containerId){
-  const container = document.getElementById(containerId);
-  container.innerHTML = "";
-  array.forEach(item=>{
-    const div = document.createElement("div");
-    div.className="item";
-    div.innerHTML = `<span>${item.name}</span><span>${item.price} <button style="margin-left:5px;" onclick="deleteItem('${containerId}','${item.name}')">❌</button></span>`;
-    container.appendChild(div);
-  });
-}
+  // Admin Panel Toggle
+  const menuBtn = document.querySelector(".menu-btn");
+  const adminPanel = document.getElementById("adminPanel");
+  menuBtn.onclick = () => {
+    const password = prompt("كلمة السر:");
+    if(password === "Kt3-Admin-01"){
+      adminPanel.style.display = adminPanel.style.display === "block" ? "none" : "block";
+    }
+  };
 
-// ====== حذف القطع ======
-function deleteItem(containerId, name){
-  if(confirm("هل تريد حذف هذه القطعة؟")){
-    const collection = containerId;
-    db.collection(collection).where("name","==",name).get().then(snapshot=>{
-      snapshot.forEach(doc=>{ doc.ref.delete(); });
+  // Add Item
+  document.getElementById("addItemBtn").onclick = async () => {
+    const name = document.getElementById("itemName").value;
+    const price = document.getElementById("itemPrice").value;
+    const category = document.getElementById("itemCategory").value;
+    if(!name || !price) return alert("أكمل جميع الحقول");
+    await addDoc(collection(db, category), {
+      name, 
+      price: parseFloat(price),
+      note: "السعر موجود هو سعر الوكالة +2$"
+    });
+    loadItems();
+  };
+
+  async function loadItems(){
+    ["spare","accessory"].forEach(async category => {
+      const listDiv = document.getElementById(category).querySelector(".itemsList");
+      listDiv.innerHTML = "";
+      const querySnapshot = await getDocs(collection(db, category));
+      querySnapshot.forEach(docItem => {
+        const data = docItem.data();
+        const div = document.createElement("div");
+        div.className = "item";
+        div.innerHTML = `<span>${data.name} (${data.note})</span><span>${data.price}$</span>`;
+        listDiv.appendChild(div);
+      });
     });
   }
-}
 
-// ====== جلب البيانات من Firebase ======
-function fetchItems(){
-  db.collection("spareParts").onSnapshot(snapshot=>{
-    spareParts.length=0;
-    snapshot.forEach(doc=>{ spareParts.push(doc.data()); });
-    populateItems(spareParts,"spareParts");
+  loadItems();
+
+  // Delivery Modal
+  const modal = document.getElementById("deliveryModal");
+  const btnModal = document.getElementById("deliveryInfoBtn");
+  const span = document.getElementsByClassName("close")[0];
+
+  btnModal.onclick = () => modal.style.display = "block";
+  span.onclick = () => modal.style.display = "none";
+  window.onclick = (event) => { if(event.target == modal) modal.style.display = "none"; };
+
+  // Floating Search
+  const floatingBtn = document.querySelector(".floating-search");
+  const searchInput = document.getElementById("searchInput");
+  floatingBtn.onclick = () => {
+    searchInput.style.display = searchInput.style.display === "block" ? "none" : "block";
+    searchInput.focus();
+  };
+  searchInput.addEventListener("input", () => {
+    const query = searchInput.value.toLowerCase();
+    ["spare","accessory"].forEach(category => {
+      const items = document.getElementById(category).querySelectorAll(".item");
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(query) ? "flex" : "none";
+      });
+    });
   });
-  db.collection("accessories").onSnapshot(snapshot=>{
-    accessories.length=0;
-    snapshot.forEach(doc=>{ accessories.push(doc.data()); });
-    populateItems(accessories,"accessories");
-  });
-}
-fetchItems();
-
-// ====== إدارة لوحة الإدارة ======
-const menuBtn = document.getElementById("menuBtn");
-const adminPanel = document.getElementById("adminPanel");
-const loginBtn = document.getElementById("loginBtn");
-const addForm = document.getElementById("addForm");
-const adminPass = document.getElementById("adminPass");
-const addItemBtn = document.getElementById("addItemBtn");
-const ADMIN_PASSWORD = "Kt3-Admin-01";
-
-menuBtn.onclick = ()=>{ adminPanel.style.display = adminPanel.style.display==="none"?"block":"none"; }
-
-loginBtn.onclick = ()=>{
-  if(adminPass.value === ADMIN_PASSWORD){
-    addForm.style.display="block";
-    alert("تم تسجيل الدخول ✅");
-  } else{
-    alert("كلمة سر خاطئة ❌");
-  }
-}
-
-// ====== إضافة القطع ======
-addItemBtn.onclick = ()=>{
-  const name = document.getElementById("itemName").value;
-  const price = document.getElementById("itemPrice").value;
-  const category = document.getElementById("itemCategory").value;
-
-  if(name && price){
-    db.collection(category).add({name, price})
-      .then(()=>{ alert("تمت الإضافة ✅"); document.getElementById("itemName").value=""; document.getElementById("itemPrice").value=""; })
-      .catch(err=>alert("حدث خطأ ❌ "+err));
-  } else alert("يرجى ملء جميع الحقول!");
-}
-
-// ====== Accordion ======
-const acc = document.getElementsByClassName("accordion");
-for(let i=0;i<acc.length;i++){
-  acc[i].addEventListener("click",function(){
-    this.classList.toggle("active");
-    const panel = this.nextElementSibling.nextElementSibling; // تخطي الملاحظة
-    panel.style.maxHeight = panel.style.maxHeight ? null : panel.scrollHeight + "px";
-  });
-}
-
-// ====== بحث مباشر ======
-document.getElementById("searchInput").addEventListener("input", function(){
-  const query = this.value.toLowerCase();
-  function filterArray(arr, containerId){
-    const filtered = arr.filter(item=>item.name.toLowerCase().includes(query));
-    populateItems(filtered,containerId);
-  }
-  filterArray(spareParts,"spareParts");
-  filterArray(accessories,"accessories");
-});
 </script>
 
 </body>
