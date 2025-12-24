@@ -8,10 +8,10 @@
   body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #0b122e;
+    background: linear-gradient(135deg,#0b122e,#1b1f3a);
     color: #fff;
+    overflow-x: hidden;
   }
-
   header {
     background: #11182b;
     display: flex;
@@ -24,133 +24,44 @@
     z-index: 1000;
     box-shadow: 0 4px 10px rgba(0,0,0,0.5);
   }
-
-  header h1 {
-    margin: 0;
-    font-size: 24px;
-  }
-
-  .menu-btn {
-    cursor: pointer;
-    font-size: 24px;
-  }
-
+  header h1 { margin:0; font-size:24px; }
+  .menu-btn { cursor:pointer; font-size:28px; transition: transform 0.2s; }
+  .menu-btn:hover { transform: scale(1.2); }
   #adminPanel {
-    display: none;
-    position: fixed;
-    top: 60px;
-    right: 10px;
-    background:#11182b;
-    padding:15px;
-    border-radius:14px;
-    width:280px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.6);
-    z-index:2000;
+    display:none; position: fixed; top:60px; right:10px;
+    background:#11182b; padding:15px; border-radius:14px;
+    width:300px; max-height: 80vh; overflow-y: auto;
+    box-shadow:0 8px 20px rgba(0,0,0,0.6); z-index:2000;
   }
-
-  #adminPanel input, #adminPanel select {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 6px;
-    border-radius: 6px;
-    border: none;
-  }
-
+  #adminPanel input, #adminPanel select { width:100%; margin-bottom:10px; padding:6px; border-radius:6px; border:none; background:#1e2b4d; color:#fff; }
   #adminPanel button {
-    width: 100%;
-    padding: 8px;
-    border: none;
-    border-radius: 6px;
-    background: #1e2b4d;
-    color: #fff;
-    cursor: pointer;
-    margin-bottom: 5px;
+    width:100%; padding:8px; border:none; border-radius:6px;
+    background:#2e3a61; color:#fff; cursor:pointer; margin-bottom:5px;
+    transition: transform 0.2s, background 0.2s;
   }
-
-  main {
-    margin-top: 80px;
-    padding: 20px;
-  }
-
-  .section {
-    margin-bottom: 40px;
-  }
-
-  .section h2 {
-    margin-bottom: 10px;
-    border-bottom: 1px solid #444;
-    padding-bottom: 5px;
-  }
-
+  #adminPanel button:hover { transform:scale(1.05); background:#3b4a82; }
+  main { margin-top:80px; padding:20px; }
+  .section { margin-bottom:40px; }
+  .section h2 { margin-bottom:10px; border-bottom:1px solid #444; padding-bottom:5px; }
   .item {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
-    border-bottom: 1px solid #333;
+    display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #333;
+    opacity:0; transform:translateY(10px); animation:fadeUp 0.5s forwards;
   }
-
-  /* Floating Search Button */
-  .floating-search {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #1e2b4d;
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-    font-size: 22px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-  }
-
-  /* Floating Search Input */
-  #searchInput {
-    display: none;
-    position: fixed;
-    bottom: 80px;
-    right: 20px;
-    width: 200px;
-    padding: 6px;
-    border-radius: 8px;
-    border: none;
-    background: #1e2b4d;
-    color: #fff;
-    z-index: 2001;
-  }
-
+  .item button { margin-left:5px; padding:2px 6px; font-size:14px; cursor:pointer; border-radius:4px; border:none; }
+  .edit-btn { background:#ff9800; color:#fff; }
+  .delete-btn { background:#f44336; color:#fff; }
+  /* Floating Buttons */
+  .floating-search, .floating-whatsapp { position:fixed; bottom:20px; border:none; border-radius:50%; width:50px; height:50px; font-size:22px; display:flex; justify-content:center; align-items:center; cursor:pointer; z-index:2000; box-shadow:0 4px 8px rgba(0,0,0,0.4); transition: transform 0.2s; }
+  .floating-search:hover, .floating-whatsapp:hover { transform:scale(1.1); }
+  .floating-search { right:20px; background:#1e2b4d; color:#fff; }
+  #searchInput { display:none; position:fixed; bottom:80px; right:20px; width:200px; padding:6px; border-radius:8px; border:none; background:#1e2b4d; color:#fff; z-index:2001; }
+  .floating-whatsapp { right:80px; bottom:20px; background:#25D366; color:#fff; text-decoration:none; }
   /* Delivery Modal */
-  .modal {
-    display: none;
-    position: fixed;
-    z-index: 3000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.7);
-  }
-
-  .modal-content {
-    background-color: #1e2b4d;
-    margin: 15% auto;
-    padding: 20px;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 400px;
-    color: #fff;
-  }
-
-  .close {
-    float: right;
-    font-size: 24px;
-    cursor: pointer;
-  }
+  .modal { display:none; position:fixed; z-index:3000; left:0; top:0; width:100%; height:100%; overflow:auto; background-color: rgba(0,0,0,0.7); }
+  .modal-content { background-color:#1e2b4d; margin:15% auto; padding:20px; border-radius:12px; width:90%; max-width:400px; color:#fff; }
+  .close { float:right; font-size:24px; cursor:pointer; }
+  @keyframes fadeUp { to{opacity:1; transform:translateY(0);} }
+  @media(max-width:600px){ #adminPanel{width:90%; right:5%;} #searchInput{width:150px;} }
 </style>
 </head>
 <body>
@@ -185,8 +96,8 @@
 
 <button class="floating-search">&#128269;</button>
 <input type="text" id="searchInput" placeholder="ابحث عن قطعة...">
+<a href="https://wa.me/96170956420" target="_blank" class="floating-whatsapp">💬</a>
 
-<!-- Delivery Modal -->
 <div id="deliveryModal" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
@@ -196,10 +107,9 @@
   </div>
 </div>
 
-<!-- Firebase -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDoi4EAAdWJ9BUbLc3mP1zuNXXUd7a4Dn4",
@@ -224,21 +134,7 @@
     }
   };
 
-  // Add Item
-  document.getElementById("addItemBtn").onclick = async () => {
-    const name = document.getElementById("itemName").value;
-    const price = document.getElementById("itemPrice").value;
-    const category = document.getElementById("itemCategory").value;
-    if(!name || !price) return alert("أكمل جميع الحقول");
-    await addDoc(collection(db, category), {
-      name, 
-      price: parseFloat(price),
-      note: "السعر موجود هو سعر الوكالة +2$"
-    });
-    loadItems();
-  };
-
-  async function loadItems(){
+  const loadItems = async () => {
     ["spare","accessory"].forEach(async category => {
       const listDiv = document.getElementById(category).querySelector(".itemsList");
       listDiv.innerHTML = "";
@@ -247,11 +143,53 @@
         const data = docItem.data();
         const div = document.createElement("div");
         div.className = "item";
-        div.innerHTML = `<span>${data.name} (${data.note})</span><span>${data.price}$</span>`;
+        div.innerHTML = `
+          <span>${data.name} (${data.note || "السعر موجود هو سعر الوكالة +2$"})</span>
+          <span>${data.price}$</span>
+          <button class="edit-btn">✏️</button>
+          <button class="delete-btn">🗑️</button>
+        `;
+        // Delete
+        div.querySelector(".delete-btn").onclick = async () => {
+          if(confirm("هل تريد حذف هذه القطعة؟")){
+            await deleteDoc(doc(db, category, docItem.id));
+            loadItems();
+          }
+        };
+        // Edit
+        div.querySelector(".edit-btn").onclick = () => {
+          document.getElementById("itemName").value = data.name;
+          document.getElementById("itemPrice").value = data.price;
+          document.getElementById("itemCategory").value = category;
+        };
         listDiv.appendChild(div);
       });
     });
-  }
+  };
+
+  // Add / Update
+  document.getElementById("addItemBtn").onclick = async () => {
+    const name = document.getElementById("itemName").value;
+    const price = document.getElementById("itemPrice").value;
+    const category = document.getElementById("itemCategory").value;
+    if(!name || !price) return alert("أكمل جميع الحقول");
+    // Check if same name exists to update
+    const itemsRef = collection(db, category);
+    const snapshot = await getDocs(itemsRef);
+    let updated=false;
+    snapshot.forEach(async docItem=>{
+      if(docItem.data().name===name){
+        await updateDoc(doc(db, category, docItem.id), { price: parseFloat(price) });
+        updated=true;
+      }
+    });
+    if(!updated){
+      await addDoc(itemsRef,{name,price:parseFloat(price),note:"السعر موجود هو سعر الوكالة +2$"});
+    }
+    loadItems();
+    document.getElementById("itemName").value="";
+    document.getElementById("itemPrice").value="";
+  };
 
   loadItems();
 
@@ -259,7 +197,6 @@
   const modal = document.getElementById("deliveryModal");
   const btnModal = document.getElementById("deliveryInfoBtn");
   const span = document.getElementsByClassName("close")[0];
-
   btnModal.onclick = () => modal.style.display = "block";
   span.onclick = () => modal.style.display = "none";
   window.onclick = (event) => { if(event.target == modal) modal.style.display = "none"; };
